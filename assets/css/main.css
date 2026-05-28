@@ -228,15 +228,15 @@ section {
 }
 
 .header.header-scrolled {
-  background: rgba(17, 24, 39, 0.88);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  padding: 14px 0;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 10px 0;
+  box-shadow: none;
 }
 
 .header .logo img {
-  max-height: clamp(55px, 8vw, 85px);
+  max-height: clamp(75px, 10vw, 115px);
   margin-right: 12px;
   filter: brightness(1.2) contrast(1.1) drop-shadow(0 0 8px rgba(255,255,255,0.3));
   transition: all 0.3s ease;
@@ -340,6 +340,18 @@ section {
   .navbar .active:focus,
   .navbar li:hover>a {
     color: #fff;
+  }
+
+  .header.header-scrolled .navbar a,
+  .header.header-scrolled .navbar a:focus {
+    color: rgba(15, 41, 48, 0.74);
+  }
+
+  .header.header-scrolled .navbar a:hover,
+  .header.header-scrolled .navbar .active,
+  .header.header-scrolled .navbar .active:focus,
+  .header.header-scrolled .navbar li:hover>a {
+    color: var(--color-secondary);
   }
 
   .navbar .dropdown ul {
@@ -497,6 +509,10 @@ section {
     transition: 0.5s;
     z-index: 9999;
     padding: 8px 4px 8px 12px;
+  }
+
+  .header.header-scrolled .mobile-nav-show {
+    color: var(--color-secondary);
   }
 
   .mobile-nav-hide {
@@ -1624,9 +1640,9 @@ section {
 }
 
 .logo .mandox-logo-img {
-  max-height: 120px;
+  max-height: 150px;
   width: auto;
-  max-width: 300px;
+  max-width: 360px;
   object-fit: contain;
   margin-right: 0;
   image-rendering: auto;
@@ -2697,7 +2713,7 @@ section {
 
 @media (max-width: 575px) {
   .logo h1 { font-size: 22px; }
-  .logo .mandox-logo-img { max-height: clamp(50px, 12vw, 75px); width: auto; max-width: 180px; }
+  .header .logo .mandox-logo-img { max-height: clamp(60px, 18vw, 90px); width: auto; max-width: 220px; }
   .section-header h2 {
     font-size: 27px;
     letter-spacing: 0;
