@@ -224,7 +224,8 @@ section {
   left: 0;
   right: 0;
   background: linear-gradient(180deg, rgba(17, 24, 39, 0.75) 0%, rgba(17, 24, 39, 0) 100%);
-  transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+  transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+  transform: translateY(0);
 }
 
 .header.header-scrolled {
@@ -235,10 +236,14 @@ section {
   box-shadow: none;
 }
 
+.header.header-hidden {
+  transform: translateY(-100%);
+}
+
 .header .logo img {
   max-height: clamp(75px, 10vw, 115px);
   margin-right: 12px;
-  filter: brightness(1.2) contrast(1.1) drop-shadow(0 0 8px rgba(255,255,255,0.3));
+  filter: brightness(1.2) contrast(1.1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
   transition: all 0.3s ease;
 }
 
@@ -318,13 +323,12 @@ section {
   .navbar>ul>li>a:before {
     content: "";
     position: absolute;
-    width: 100%;
     height: 2px;
     bottom: -6px;
     left: 0;
     background-color: var(--color-primary);
     visibility: hidden;
-    width: 0px;
+    width: 0;
     transition: all 0.3s ease-in-out 0s;
   }
 

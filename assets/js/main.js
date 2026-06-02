@@ -7,22 +7,25 @@
 document.addEventListener('DOMContentLoaded', () => {
   "use strict";
 
+  const body = document.body;
+  const siteHeader = document.querySelector('#header');
+
   /**
    * Mobile nav toggle
    */
-
   const mobileNavShow = document.querySelector('.mobile-nav-show');
   const mobileNavHide = document.querySelector('.mobile-nav-hide');
 
   document.querySelectorAll('.mobile-nav-toggle').forEach(el => {
-    el.addEventListener('click', function(event) {
+    el.addEventListener('click', event => {
       event.preventDefault();
-      mobileNavToogle();
-    })
+      mobileNavToggle();
+    });
   });
 
-  function mobileNavToogle() {
-    document.querySelector('body').classList.toggle('mobile-nav-active');
+  function mobileNavToggle() {
+    body.classList.toggle('mobile-nav-active');
+    if (siteHeader) siteHeader.classList.remove('header-hidden');
     if (mobileNavShow) mobileNavShow.classList.toggle('d-none');
     if (mobileNavHide) mobileNavHide.classList.toggle('d-none');
   }
@@ -31,18 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
    * Hide mobile nav on same-page/hash links
    */
   document.querySelectorAll('#navbar a').forEach(navbarlink => {
-
     if (!navbarlink.hash) return;
 
-    let section = document.querySelector(navbarlink.hash);
+    const section = document.querySelector(navbarlink.hash);
     if (!section) return;
 
     navbarlink.addEventListener('click', () => {
-      if (document.querySelector('.mobile-nav-active')) {
-        mobileNavToogle();
+      if (body.classList.contains('mobile-nav-active')) {
+        mobileNavToggle();
       }
     });
-
   });
 
   /**
@@ -52,30 +53,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
   navDropdowns.forEach(el => {
     el.addEventListener('click', function(event) {
-      if (document.querySelector('.mobile-nav-active')) {
+      if (body.classList.contains('mobile-nav-active')) {
         event.preventDefault();
-        this.classList.toggle('active');
-        this.nextElementSibling.classList.toggle('dropdown-active');
+        const dropdownMenu = this.nextElementSibling;
 
-        let dropDownIndicator = this.querySelector('.dropdown-indicator');
-        dropDownIndicator.classList.toggle('bi-chevron-up');
-        dropDownIndicator.classList.toggle('bi-chevron-down');
+        this.classList.toggle('active');
+        if (dropdownMenu) dropdownMenu.classList.toggle('dropdown-active');
+
+        const dropDownIndicator = this.querySelector('.dropdown-indicator');
+        if (dropDownIndicator) {
+          dropDownIndicator.classList.toggle('bi-chevron-up');
+          dropDownIndicator.classList.toggle('bi-chevron-down');
+        }
       }
-    })
+    });
   });
 
   /**
    * Sticky header — add solid background on scroll
    */
-  const siteHeader = document.querySelector('#header');
   if (siteHeader) {
+    let lastScrollY = window.scrollY;
+
     const toggleHeaderScrolled = () => {
-      window.scrollY > 80
+      const currentScrollY = window.scrollY;
+      const isMobileNavOpen = body.classList.contains('mobile-nav-active');
+
+      currentScrollY > 80
         ? siteHeader.classList.add('header-scrolled')
         : siteHeader.classList.remove('header-scrolled');
+
+      if (isMobileNavOpen || currentScrollY < 120 || currentScrollY < lastScrollY) {
+        siteHeader.classList.remove('header-hidden');
+      } else if (currentScrollY > lastScrollY) {
+        siteHeader.classList.add('header-hidden');
+      }
+
+      lastScrollY = currentScrollY;
     };
     window.addEventListener('load', toggleHeaderScrolled);
-    document.addEventListener('scroll', toggleHeaderScrolled);
+    document.addEventListener('scroll', toggleHeaderScrolled, { passive: true });
   }
 
   /**
@@ -101,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         message
       ].join('\n');
 
-      window.location.href = `mailto:mandoxmech@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+      window.location.href = `mailto:info@mandoxyengineers.co.zw?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
     });
   }
 
@@ -110,11 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   const scrollTop = document.querySelector('.scroll-top');
   if (scrollTop) {
-    const togglescrollTop = function() {
+    const toggleScrollTop = () => {
       window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
-    }
-    window.addEventListener('load', togglescrollTop);
-    document.addEventListener('scroll', togglescrollTop);
+    };
+    window.addEventListener('load', toggleScrollTop);
+    document.addEventListener('scroll', toggleScrollTop, { passive: true });
     scrollTop.addEventListener('click', event => {
       event.preventDefault();
       window.scrollTo({
